@@ -1,0 +1,5 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/marcos/Escritorio/ayeda/ayeda-p09-arbol_binario/ayeda-p09-ABEq'
+g++ -std=c++14 -Wall -o ./bin/arbol_binario ./src/main.cc ./src/clave.cc ./src/node.cc ./src/arbol_bin.cc
+make: Leaving directory '/home/marcos/Escritorio/ayeda/ayeda-p09-arbol_binario/ayeda-p09-ABEq'
+ 
