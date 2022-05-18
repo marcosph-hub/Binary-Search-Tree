@@ -1,5 +1,5 @@
 #include "../include/clave.h"
-
+/*
 Clave::Clave() {
   srand(time(NULL));
   numeric_value = 100 +rand() % (999 - 100);
@@ -80,5 +80,60 @@ bool Clave::operator==(const Clave &parameter) const {
 
 std::ostream& operator<<(std::ostream& os, Clave parameter) {
   os << parameter.getSymbols().first << parameter.getNumeric_Value() << parameter.getSymbols().second << "  "; 
+  return os;
+}
+*/
+Clave::Clave() {
+  srand(time(0));
+  int randValue = (rand()%1)+50;
+  value = randValue;
+}
+
+Clave::Clave(int parametre) {
+  value = parametre;
+}
+
+Clave::~Clave() {}
+
+int Clave::getValue() {
+  return value;
+}
+
+void Clave::setValue(int parametre) {
+  value = parametre;
+}
+
+bool Clave::operator<(Clave &parameter) {
+  if (this->getValue() < parameter.getValue()) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool Clave::operator>(Clave &parameter) {
+  if (this->getValue() > parameter.getValue()) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+Clave& Clave::operator=(const Clave &parametre) {
+  this->value = parametre.value;
+  return *this;
+}
+
+bool Clave::operator==(const Clave &parametre) const {
+  if (this->value == parametre.value){
+    return true;
+  } else { 
+    return false;
+  }
+}
+
+std::ostream& operator<<(std::ostream& os, Clave parametre) {
+  os << parametre.getValue() << " ";
   return os;
 }

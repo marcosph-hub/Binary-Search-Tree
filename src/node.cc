@@ -2,7 +2,7 @@
 
 Nodo::~Nodo() {}
 
-Clave Nodo::getData() {
+Clave& Nodo::getData() {
   return data;
 }
 

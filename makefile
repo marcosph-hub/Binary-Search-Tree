@@ -1,5 +1,5 @@
 main: ./src/main.cc
-	g++ -std=c++14 -Wall -o ./bin/arbol_binario ./src/main.cc ./src/clave.cc ./src/node.cc ./src/arbol_bin.cc
+	g++ -std=c++14 -Wall -o ./bin/arbol_binario ./src/main.cc ./src/clave.cc ./src/node.cc ./src/arbol_bin.cc ./src/claveNumber.cc 
 
 clave.o: clave.cc
 	g++ -std=c++14 -Wall -o ./bin/clave ./src/clave.cc

@@ -1,4 +1,5 @@
 //#pragma once
+/*
 #ifndef CLAVE_H__
 #define CLAVE_H__
 
@@ -35,3 +36,26 @@ class Clave {
   
 };
 #endif 
+*/
+#pragma once
+
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+
+class Clave {
+  private:
+    int value;
+
+  public:
+    Clave();
+    Clave(int newValue);
+    ~Clave();
+    int getValue();
+    void setValue(int parametre);
+    bool operator<(Clave &parameter);
+    bool operator>(Clave &parameter);
+    Clave& operator=(const Clave &parameter);
+    bool operator==(const Clave &parameter) const;
+    friend std::ostream& operator<<(std::ostream& os,  Clave parameter);
+};

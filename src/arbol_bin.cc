@@ -1,70 +1,79 @@
 #include "../include/arbol_bin.h"
-
-Arbol_Bin::~Arbol_Bin()
+template <class Clave>
+Arbol_Bin<Clave>::~Arbol_Bin()
 {
   Podar(root);
 }
-
-Nodo* Arbol_Bin::getRoot() {
+template <class Clave>
+Nodo* Arbol_Bin<Clave>::getRoot() {
   return root;
 }
-
-void Arbol_Bin::Podar(Nodo* parameter) {
-  if (parameter == NULL)
+template <class Clave>
+void Arbol_Bin<Clave>::Podar(Nodo* parametre) {
+  if (parametre == NULL)
     return;
-  Podar(parameter->getLeftNode()); 
-  Podar(parameter->getRightNode());
-  delete parameter;
-  parameter = NULL;
+  Podar(parametre->getLeftNode()); 
+  Podar(parametre->getRightNode());
+  delete parametre;
+  parametre = NULL;
 }
 
-bool Arbol_Bin::IsEmpty(Nodo *parameter) {
-  return parameter == NULL;
+template <class Clave>
+bool Arbol_Bin<Clave>::IsEmpty(Nodo *parametre) {
+  return parametre == NULL;
 }
 
-bool Arbol_Bin::IsLeaf(Nodo *parameter) {
-  return IsEmpty(parameter);
+template <class Clave>
+bool Arbol_Bin<Clave>::IsLeaf(Nodo *parametre) {
+  return IsEmpty(parametre);
 
 }
 
-int Arbol_Bin::TreeSize() {
+template <class Clave>
+int Arbol_Bin<Clave>::TreeSize() {
   return BranchSize(root);
 }
 
-int Arbol_Bin::BranchSize(Nodo *parameter) {
-  if (parameter == NULL) return 0;
-  return (1 + BranchSize(parameter->getLeftNode()) + BranchSize(parameter->getRightNode()));
+template <class Clave>
+int Arbol_Bin<Clave>::BranchSize(Nodo *parametre) {
+  if (parametre == NULL) return 0;
+  return (1 + BranchSize(parametre->getLeftNode()) + BranchSize(parametre->getRightNode()));
 }
 
-int Arbol_Bin::TreeHeight() {
+template <class Clave>
+int Arbol_Bin<Clave>::TreeHeight() {
   return BranchHeight(root);
 }
 
-int Arbol_Bin::BranchHeight(Nodo *parameter) {
-  if (parameter == NULL) return 0;
-  int left_height = BranchHeight(parameter->getRightNode());
-  int right_height = BranchHeight(parameter->getLeftNode());
+template <class Clave>
+int Arbol_Bin<Clave>::BranchHeight(Nodo *parametre) {
+  if (parametre == NULL) return 0;
+  int left_height = BranchHeight(parametre->getRightNode());
+  int right_height = BranchHeight(parametre->getLeftNode());
   if (right_height > left_height) return right_height++;
   else return left_height++;
 }
 
-bool Arbol_Bin::TreeBalanced() {
+template <class Clave>
+bool Arbol_Bin<Clave>::TreeBalanced() {
   return BranchBalanced(root);
 }
 
-bool Arbol_Bin::BranchBalanced(Nodo *parameter){
-  if (parameter == NULL) return true;
-  int balance = BranchSize(parameter->getLeftNode()) - BranchSize(parameter);
+template <class Clave>
+bool Arbol_Bin<Clave>::BranchBalanced(Nodo *parametre){
+  if (parametre == NULL) return true;
+  int balance = BranchSize(parametre->getLeftNode()) - BranchSize(parametre);
   switch (balance){
     case -1:
     case 0: 
     case 1:
-      return BranchBalanced(parameter->getLeftNode()) && BranchBalanced(parameter -> getRightNode());
+      return BranchBalanced(parametre->getLeftNode()) && BranchBalanced(parametre -> getRightNode());
     default: return false;
   }
 }
 
-void Arbol_Bin::TreeInsertionBal(Clave data) {
+template <class Clave>
+void Arbol_Bin<Clave>::TreeInsertionBal(Clave data) {
   int level = 0;
   if(root == NULL) {
     root = new Nodo(data, NULL, NULL);
@@ -73,37 +82,107 @@ void Arbol_Bin::TreeInsertionBal(Clave data) {
   else BranchInsertionBal(data, root, level+1);
 }
 
-void Arbol_Bin::BranchInsertionBal(Clave data, Nodo *parameter, int level)  {
-  if (BranchSize(parameter -> getLeftNode()) <= BranchSize(parameter -> getRightNode())) {
-    if (parameter -> getLeftNode() !=NULL) { 
-      BranchInsertionBal(data, parameter -> getLeftNode(), level+1); 
+template <class Clave>
+void Arbol_Bin<Clave>::BranchInsertionBal(Clave data, Nodo *parametre, int level)  {
+
+  if(parametre == NULL) {
+    parametre = new Nodo(data);
+  }
+  else if (data < parametre->getData()) {
+    if (parametre -> getLeftNode() !=NULL) { 
+      BranchInsertionBal(data, parametre -> getLeftNode(), level+1); 
     }
     else { 
       Nodo *auxiliar = new Nodo(data, NULL, NULL);
-      parameter -> setLeftNode(auxiliar);
+      parametre -> setLeftNode(auxiliar);
      }
   }
   else {
-    if (parameter -> getRightNode() !=NULL) { 
+    if (parametre == NULL) {
+      Nodo *auxiliar = new Nodo(data, NULL, NULL);
+      parametre -> setLeftNode(auxiliar);
+    } else if (data < parametre->getData()) {
+      BranchInsertionBal(data, parametre -> getRightNode(), level+1); 
+    } else {
+      BranchInsertionBal(data, parametre -> getLeftNode(), level+1); 
+    }
+    
+    if (parametre -> getRightNode() !=NULL) { 
 
-      BranchInsertionBal(data, parameter -> getRightNode(), level+1); 
+      BranchInsertionBal(data, parametre -> getRightNode(), level+1); 
     }
     else {
       Nodo *auxiliar = new Nodo(data, NULL, NULL);
-      parameter -> setRightNode(auxiliar);
+      parametre -> setRightNode(auxiliar);
     }
   }
 }
 
-void Arbol_Bin::Printer(Nodo *parameter, int level) {
-  if (parameter == NULL) return;
-  std::cout <<"Nivel " << level << parameter << std::endl;
-  Printer(parameter -> getLeftNode(), level+1);
-  Printer(parameter -> getRightNode(), level+1);
+template <class Clave>
+void Arbol_Bin<Clave>::Remove(Clave data) {
+  RemoveBranch(root, data);
+}
+
+template <class Clave>
+void Arbol_Bin<Clave>::RemoveBranch(Nodo* parametre, Clave data) {
+  if(parametre == NULL) {
+    std::cout << "Fatal error. Node dont exist" << std::endl;
+    exit(1);
+  };
+  if(data < parametre->getData()){
+    RemoveBranch(parametre->getLeftNode(),data);
+  } else if (data > parametre->getData()) {
+    RemoveBranch(parametre->getRightNode(),data);
+  } else {
+    Nodo* Eliminado = parametre;
+    if(parametre->getRightNode() == NULL) {
+      parametre = parametre->getLeftNode();
+    } else if(parametre->getLeftNode() == NULL) {/*
+      parametre = parametre->getRightNode();
+*/
+    } else {
+      Replace(Eliminado, parametre->getLeftNode());
+    }
+    delete (Eliminado);
+    
+  }
+}
+
+template <class Clave>
+void Arbol_Bin<Clave>::Replace(Nodo* removed, Nodo* replaced) {
+/*
+  if (replaced->getRightNode() != NULL) {
+    Replace(removed, replaced->getRightNode());
+  } else {
+    removed->getData() = replaced->getData();
+    removed = replaced;
+    replaced = replaced->getLeftNode();
+  }
+*/
 }
 
 
-void Arbol_Bin::ExploreByLevels(Nodo *paremeter) {
+template <class Clave>
+bool Arbol_Bin<Clave>::Search(Clave data) {
+  return RecursiveSearch(data, root);
+}
+
+template <class Clave>
+bool Arbol_Bin<Clave>::RecursiveSearch(Clave data, Nodo* parametre)  {
+  if(parametre != NULL && parametre -> getData() == data){
+    return true;
+  } if (parametre != NULL) {
+    bool aux = false;
+    aux = RecursiveSearch(data, parametre -> getLeftNode());
+    if(aux) return aux;
+    aux = RecursiveSearch(data, parametre -> getRightNode());
+    if(aux) return aux;
+   }
+  return false;
+}
+
+template <class Clave>
+void Arbol_Bin<Clave>::ExploreByLevels(Nodo *paremeter) {
   std::queue <std::pair <Nodo*,int>> cola;
   int nivel_actual = 0;
   cola.push(std::make_pair(paremeter, nivel_actual));
@@ -117,7 +196,7 @@ void Arbol_Bin::ExploreByLevels(Nodo *paremeter) {
     }
     if(copy.first != NULL) {
       if(check) {
-        std::cout << "\nNivel: " << copy.second << std::endl;
+        std::cout << std::endl;
         std::cout  << copy.first;
       } else {
         std::cout << copy.first;
@@ -126,7 +205,7 @@ void Arbol_Bin::ExploreByLevels(Nodo *paremeter) {
       cola.push(std::make_pair(copy.first ->getRightNode(), copy.second+1));
     } else {
       if(check) {
-        std::cout << "\nNivel: " << copy.second << std::endl;
+        std::cout << std::endl;
         std::cout << "[Ø]";
       } else {
         std::cout << "[Ø]";
@@ -134,22 +213,3 @@ void Arbol_Bin::ExploreByLevels(Nodo *paremeter) {
     }
   }
 }
-
-
-bool Arbol_Bin::Search(Clave data) {
-  return RecursiveSearch(data, root);
-}
-
-bool Arbol_Bin::RecursiveSearch(Clave data, Nodo* parameter)  {
-  if(parameter != NULL && parameter -> getData() == data){
-    return true;
-  } if (parameter != NULL) {
-    bool aux = false;
-    aux = RecursiveSearch(data, parameter -> getLeftNode());
-    if(aux) return aux;
-    aux = RecursiveSearch(data, parameter -> getRightNode());
-    if(aux) return aux;
-   }
-  return false;
-}
-

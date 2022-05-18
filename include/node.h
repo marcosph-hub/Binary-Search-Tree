@@ -12,14 +12,17 @@ class Nodo{
     Clave data;
     Nodo *left_node;
     Nodo *right_node;
-    Nodo *pater_node; //borrar 
+  
   
   public:
   
-    Nodo(Clave data_parameter, Nodo *left_parameter=NULL, Nodo *right_parameter=NULL, Nodo *pater_parameter=NULL):
-    data(data_parameter), left_node(left_parameter), right_node(right_parameter), pater_node(pater_parameter) {}
+    Nodo(Clave data_parameter, Nodo *left_parameter=NULL, Nodo *right_parameter=NULL):
+    data(data_parameter), 
+    left_node(left_parameter), 
+    right_node(right_parameter)
+    {}
     ~Nodo();
-    Clave getData();
+    Clave& getData();
     Nodo* getLeftNode();
     Nodo* getRightNode();
     void setData(const Clave parameter);
@@ -28,6 +31,7 @@ class Nodo{
     Nodo* operator=(Nodo *parameter);
     bool operator==(Nodo *parameter) const;
     friend std::ostream& operator<<(std::ostream& os, Nodo *parameter);
+    
 
 };
 #endif
